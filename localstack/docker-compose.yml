@@ -1,12 +1,17 @@
-version: '2.1'
+version: '3.8'
 
 services:
   localstack:
-    container_name: "${LOCALSTACK_DOCKER_NAME-localstack_main}"
-    image: localstack/localstack
-    network_mode: bridge
+    container_name: "localstack_main"
+    image: localstack/localstack:latest
+    environment:
+      - SERVICES=s3
+      - DATA_DIR=/tmp/localstack/data
     ports:
       - "4566-4599:4566-4599"
       - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
-    environment:
-      - SERVICES=s3,dynamodb  
+    volumes:
+      - localstack_data:/tmp/localstack/data
+
+volumes:
+  localstack_data:
