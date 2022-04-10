@@ -4,14 +4,13 @@ services:
   localstack:
     container_name: "localstack_main"
     image: localstack/localstack:latest
+    ports:
+      - '4563-4599:4563-4599'
+      - '8055:8080'
     environment:
       - SERVICES=s3
+      - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
-    ports:
-      - "4566-4599:4566-4599"
-      - "${PORT_WEB_UI-8080}:${PORT_WEB_UI-8080}"
     volumes:
-      - localstack_data:/tmp/localstack/data
-
-volumes:
-  localstack_data:
+      - './.localstack:/tmp/localstack'
+      - '/var/run/docker.sock:/var/run/docker.sock'
